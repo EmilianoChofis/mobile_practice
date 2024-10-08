@@ -1,29 +1,68 @@
 import 'package:flutter/material.dart';
 
 
-class Auth extends StatelessWidget {
+class Auth extends StatefulWidget {
   const Auth({super.key});
 
   @override
+  State<Auth> createState() => _AuthState();
+}
+
+class _AuthState extends State<Auth> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  bool _isBlack = true;
+  @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Column(
-        children: [
-          const Row(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Icon(Icons.ice_skating),
+              Image.asset('assets/starbucks.png', width: 100, height: 100,),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'Correo electronico',
+                  label: Text('Correo electronico'),
+                  labelStyle: TextStyle(color: Colors.black26)
+                ),
+                keyboardType: TextInputType.emailAddress,
+                controller: _email,
               ),
-              Column(children: [
-                Text('Emiliano', style: TextStyle(fontWeight: FontWeight.bold),),
-                Text('Emiliano Zapata', style: TextStyle(color: Colors.amberAccent, fontSize: 12.0),)
-              ],),
-              Expanded(child: Align(alignment: Alignment.center, child: Icon(Icons.ice_skating))),
+              const SizedBox(height: 16,),
+              TextFormField(
+                decoration: InputDecoration(
+                    hintText: 'Contraseña',
+                    label: const Text('Contraseña'),
+                    labelStyle: const TextStyle(color: Colors.black26),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                      _isBlack = !_isBlack;
+                          });
+                          }, icon: Icon(
+                        _isBlack ?
+                        Icons.visibility :
+                        Icons.visibility_off)),
+                ),
+                controller: _password,
+                obscureText: _isBlack,
+              ),
+              const SizedBox(height: 16,),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(onPressed: () {
+                  print('email: ${_email.text}');
+                  print('email: ${_email.text}');
+
+                }, child: const Text('inicia sesion')),
+              )
             ],
           ),
-          Image.asset('assets/starbucks.png', width: double.infinity, height: 300),
-        ],
+        ),
       ),
     );
   }
