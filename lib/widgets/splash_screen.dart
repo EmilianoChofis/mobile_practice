@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,9 +13,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/auth');
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User? user) {
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/menu');
+        print(user.uid);
+      }else{
+        Navigator.pushReplacementNamed(context, '/auth');
+      }
     });
+    //Future.delayed(const Duration(seconds: 3), () {
+     // Navigator.pushReplacementNamed(context, '/auth');
+    //});
   }
 
   @override
