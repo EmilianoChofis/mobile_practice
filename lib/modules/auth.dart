@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_practice/widgets/custom_password_field.dart';
 
 
 class Auth extends StatefulWidget {
@@ -33,23 +34,8 @@ class _AuthState extends State<Auth> {
                 controller: _email,
               ),
               const SizedBox(height: 16,),
-              TextFormField(
-                decoration: InputDecoration(
-                    hintText: 'Contraseña',
-                    label: const Text('Contraseña'),
-                    labelStyle: const TextStyle(color: Colors.black26),
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                      _isBlack = !_isBlack;
-                          });
-                          }, icon: Icon(
-                        _isBlack ?
-                        Icons.visibility :
-                        Icons.visibility_off)),
-                ),
+              TextFieldPassword(
                 controller: _password,
-                obscureText: _isBlack,
               ),
               const SizedBox(height: 16,),
               SizedBox(
@@ -69,8 +55,14 @@ class _AuthState extends State<Auth> {
                       print('Wrong password provided for that user.');
                     }
                   }
-                }, child: const Text('inicia sesion')),
-              )
+                }, child: const Text('inicia sesion'),
+                  style: OutlinedButton.styleFrom(backgroundColor: Colors.blueAccent, foregroundColor: Colors.white),
+                ),
+
+              ),
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, '/register');
+              }, child: const Text('Register', style: TextStyle(color: Colors.blue,decoration: TextDecoration.underline, decorationColor: Colors.blue),)),
             ],
           ),
         ),

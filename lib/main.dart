@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_practice/modules/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobile_practice/modules/register.dart';
 import 'firebase_options.dart';
 
 import 'package:mobile_practice/navigation/navigation.dart';
@@ -33,6 +34,7 @@ class MainApp extends StatelessWidget {
         '/menu': (context) => const Navigation(),
         '/home': (context) => const Home(),
         '/auth': (context) => const Auth(),
+        '/register': (context) => const Register(),
         '/reservations': (context) => const Reservations(),
         '/top': (context) => const Top(),
         '/profile': (context) => const Profile(),
