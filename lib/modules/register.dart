@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_practice/widgets/custom_password_field.dart';
 
@@ -35,10 +36,9 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       children: [
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'Correo electronico',
-                            label: Text('Correo electronico'),
-
+                            label: Text('Correo electronico')
                           ),
                           keyboardType: TextInputType.emailAddress,
                          controller: _email,
@@ -51,7 +51,16 @@ class _RegisterState extends State<Register> {
                           width: double.infinity,
                           height: 48,
                           child: ElevatedButton(onPressed: () async {
-                            print('registro');
+                            try {
+                              //createUserWithEmailAndPassword
+                              final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                  email: _email.text,
+                                  password: _password.text
+                              );
+                              print(credential);
+                            } on FirebaseAuthException catch (e) {
+                              print(e);
+                            }
                           },
                             style: OutlinedButton.styleFrom(backgroundColor: Colors.blueAccent, foregroundColor: Colors.white), child: const Text('Registrarse'),
                           ),
