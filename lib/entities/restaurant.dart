@@ -12,7 +12,7 @@ class Restaurant{
   String get description => _descripcion;
   List<dynamic> get images => _images;
   int get count => _count;
-  double get rating => _rating;
+  double get rating => _rating / _count;
 
 
 }
