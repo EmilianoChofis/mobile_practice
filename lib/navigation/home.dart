@@ -12,30 +12,38 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final db = FirebaseFirestore.instance;
-  List<Restaurant> restaurants = [];
+  List<Restaurant> restaurantes = [];
   late bool isLoading = true;
   @override
   void initState() {
-    print('d');
     super.initState();
+    // Llama a la función asíncrona que carga los datos
+    fetchData();
+  }
 
-    (() async => {
-          await db.collection("restaurantes").get().then((event) {
-            for (var doc in event.docs) {
-              final restaurant = Restaurant(
-                  doc.data()['name'],
-                  doc.data()['description'],
-                  doc.data()['images'],
-                  doc.data()['count'],
-                  doc.data()['rating']);
-              restaurants.add(restaurant);
-              print("hola ${doc.id} => ${doc.data()}");
-            }
-            if (mounted) {
-              setState(() => isLoading = false);
-            }
-          })
-        });
+  // Función asíncrona para cargar datos de Firestore
+  Future<void> fetchData() async {
+    print('Cargando datos de Firestore...');
+    try {
+      final event = await db.collection("restaurantes").get();
+      for (var doc in event.docs) {
+        final restaurant = Restaurant(
+          doc.data()['name'],
+          doc.data()['descripcion'],
+          doc.data()['images'],
+          doc.data()['count'],
+          doc.data()['rating'],
+        );
+        restaurantes.add(restaurant);
+        print("hola ${doc.id} => ${doc.data()}");
+      }
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    } catch (e) {
+      print("Error al cargar datos: $e");
+    }
+
   }
 
   @override
@@ -70,7 +78,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         Image.network(
-          restaurants[0].images[0],
+          restaurantes[0].images[0],
           height: 150,
           width: 150,
         ),
@@ -80,15 +88,15 @@ class _HomeState extends State<Home> {
         Column(
           children: [
             Text(
-              restaurants[0].name,
+              restaurantes[0].name,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(restaurants[0].description)
+            Text(restaurantes[0].description)
           ],
         ),
         const Spacer(),
         StarRating(
-          rating: restaurants[0].rating,
+          rating: restaurantes[0].rating,
         )
       ]),
     );
