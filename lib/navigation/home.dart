@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:mobile_practice/entities/restaurant.dart';
+import 'package:mobile_practice/widgets/list_restaurant_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,12 +19,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     // Llama a la función asíncrona que carga los datos
-    fetchData();
+    _fetchData();
   }
 
   // Función asíncrona para cargar datos de Firestore
-  Future<void> fetchData() async {
-    print('Cargando datos de Firestore...');
+  Future<void> _fetchData() async {
     try {
       final event = await db.collection("restaurantes").get();
       for (var doc in event.docs) {
@@ -35,7 +35,6 @@ class _HomeState extends State<Home> {
           doc.data()['rating'],
         );
         restaurantes.add(restaurant);
-        print("hola ${doc.id} => ${doc.data()}");
       }
       if (mounted) {
         setState(() => isLoading = false);
@@ -50,11 +49,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: Center(child: CircularProgressIndicator()),
       );
     }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Inicio"),
@@ -62,43 +60,18 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          Navigator.pushNamed(context, '/reservations'),
+          Navigator.pushNamed(context, '/top'),
         },
         child: const Icon(Icons.chevron_right),
       ),
-      body: Row(children: [
-        Column(
-          children: <Widget>[
-            const Text("Inicio"),
-            ElevatedButton(
-                onPressed: () => {
-                      //Navigator.pushNamed(context, '/profile'),
-                    },
-                child: const Text("Perfil")),
-          ],
-        ),
-        Image.network(
-          restaurantes[0].images[0],
-          height: 150,
-          width: 150,
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        Column(
-          children: [
-            Text(
-              restaurantes[0].name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(restaurantes[0].description)
-          ],
-        ),
-        const Spacer(),
-        StarRating(
-          rating: restaurantes[0].rating,
-        )
-      ]),
+      body: ListView.separated(
+          padding: const EdgeInsets.all(8),
+          itemCount: restaurantes.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListRestaurantData(restaurant: restaurantes[index]);
+          },
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
     );
   }
 }
