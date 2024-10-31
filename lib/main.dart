@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_practice/modules/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobile_practice/modules/register.dart';
+import 'package:mobile_practice/navigation/sample_map.dart';
 import 'package:mobile_practice/widgets/detail_restaurant.dart';
 import 'firebase_options.dart';
 
@@ -40,6 +41,7 @@ class MainApp extends StatelessWidget {
         '/top': (context) => const Top(),
         '/profile': (context) => const Profile(),
         '/detail': (context) => const DetailRestaurant(),
+        '/map': (context) => const MapSample(),
       },
     );
   }

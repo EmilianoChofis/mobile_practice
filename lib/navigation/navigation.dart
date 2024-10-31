@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_practice/navigation/home.dart';
 import 'package:mobile_practice/navigation/profile.dart';
 import 'package:mobile_practice/navigation/reservations.dart';
+import 'package:mobile_practice/navigation/sample_map.dart';
 import 'package:mobile_practice/navigation/top.dart';
 
 class Navigation extends StatefulWidget {
@@ -19,7 +20,8 @@ class _NavigationState extends State<Navigation> {
     Home(),
     Top(),
     Reservations(),
-    Profile()
+    Profile(),
+    MapSample()
   ];
 
   @override
@@ -43,6 +45,10 @@ class _NavigationState extends State<Navigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person_off_outlined),
             label: 'Perfil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Mapa',
           ),
         ],
         currentIndex: _selectedIndex,
