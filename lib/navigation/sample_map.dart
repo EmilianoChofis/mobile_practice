@@ -15,7 +15,7 @@ class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController>();
 
   CameraPosition? _initialPosition;
-
+  final Set<Marker> _markers = {};
 
   @override
   void initState() {
@@ -27,8 +27,15 @@ class MapSampleState extends State<MapSample> {
           target: LatLng(position.latitude, position.longitude),
           zoom: 14.4746,
         );
+        _markers.add(
+            Marker(
+                markerId: const MarkerId("currentLocation"),
+                position: LatLng(position.latitude, position.longitude),
+                infoWindow: const InfoWindow(title: 'mi localizacion'))
+        );
       });
     });
+
   }
 
   Future<Position> _determinePosition() async {
@@ -71,6 +78,7 @@ class MapSampleState extends State<MapSample> {
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        markers: _markers,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
