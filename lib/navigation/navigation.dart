@@ -5,9 +5,12 @@ import 'package:mobile_practice/navigation/profile.dart';
 import 'package:mobile_practice/navigation/reservations.dart';
 import 'package:mobile_practice/navigation/sample_map.dart';
 import 'package:mobile_practice/navigation/top.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Navigation extends StatefulWidget {
-  const Navigation({super.key});
+  final bool nextButton;
+
+  const Navigation({super.key, required this.nextButton});
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -15,6 +18,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
+  late final SharedPreferences prefs;
 
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
@@ -62,5 +66,20 @@ class _NavigationState extends State<Navigation> {
 
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);
+  }
+  @override
+  void initState() {
+    super.initState();
+    _checkTutorial();
+  }
+
+  Future<void> _checkTutorial() async {
+    if (!widget.nextButton) {
+      prefs = await SharedPreferences.getInstance();
+      final bool? tutorial = prefs.getBool('tutorial');
+      if (tutorial == null) {
+        Navigator.pushReplacementNamed(context, '/tutorial');
+      }
+    }
   }
 }

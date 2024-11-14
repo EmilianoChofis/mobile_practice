@@ -13,6 +13,8 @@ import 'package:mobile_practice/navigation/home.dart';
 import 'package:mobile_practice/navigation/profile.dart';
 import 'package:mobile_practice/navigation/top.dart';
 
+import 'modules/tutorial.dart';
+
 void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -33,7 +35,9 @@ class MainApp extends StatelessWidget {
       initialRoute: '/menu',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/menu': (context) => const Navigation(),
+        '/menu': (context) => const Navigation(
+          nextButton: false,
+        ),
         '/home': (context) => const Home(),
         '/auth': (context) => const Auth(),
         '/register': (context) => const Register(),
@@ -42,6 +46,7 @@ class MainApp extends StatelessWidget {
         '/profile': (context) => const Profile(),
         '/detail': (context) => const DetailRestaurant(),
         '/map': (context) => const MapSample(),
+        '/tutorial': (context) => const Tutorial(),
       },
     );
   }
